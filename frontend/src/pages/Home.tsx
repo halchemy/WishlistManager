@@ -1,29 +1,31 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store/auth'
 
 export function HomePage() {
+  const { t } = useTranslation()
   const { isAuthenticated } = useAuthStore()
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-      <h1 className="text-4xl font-bold mb-4">WishlistManager</h1>
+      <h1 className="text-4xl font-bold mb-4">{t('home.title')}</h1>
       <p className="text-xl text-[hsl(var(--muted-foreground))] mb-8 max-w-md">
-        Manage your wishlists from various shopping sites in one place.
+        {t('home.subtitle')}
       </p>
 
       {isAuthenticated ? (
         <Link to="/dashboard">
-          <Button size="lg">Go to Dashboard</Button>
+          <Button size="lg">{t('home.goToDashboard')}</Button>
         </Link>
       ) : (
         <div className="flex gap-4">
           <Link to="/signup">
-            <Button size="lg">Get Started</Button>
+            <Button size="lg">{t('home.getStarted')}</Button>
           </Link>
           <Link to="/login">
             <Button variant="outline" size="lg">
-              Login
+              {t('header.login')}
             </Button>
           </Link>
         </div>
@@ -31,21 +33,21 @@ export function HomePage() {
 
       <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl">
         <div className="p-6 rounded-lg border border-[hsl(var(--border))]">
-          <h3 className="font-semibold mb-2">Easy Registration</h3>
+          <h3 className="font-semibold mb-2">{t('home.feature1Title')}</h3>
           <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            Just paste a URL and product info is automatically fetched.
+            {t('home.feature1Desc')}
           </p>
         </div>
         <div className="p-6 rounded-lg border border-[hsl(var(--border))]">
-          <h3 className="font-semibold mb-2">Unified Management</h3>
+          <h3 className="font-semibold mb-2">{t('home.feature2Title')}</h3>
           <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            Manage items from any shopping site in one place.
+            {t('home.feature2Desc')}
           </p>
         </div>
         <div className="p-6 rounded-lg border border-[hsl(var(--border))]">
-          <h3 className="font-semibold mb-2">Stay Organized</h3>
+          <h3 className="font-semibold mb-2">{t('home.feature3Title')}</h3>
           <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            Categorize, prioritize, and track your purchases.
+            {t('home.feature3Desc')}
           </p>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useItemsStore } from '@/store/items'
 import { ogpApi } from '@/lib/api'
 import { Button } from '@/components/ui/button'
@@ -9,11 +10,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 type Priority = 'high' | 'medium' | 'low' | null
 
 export function AddItemPage() {
+  const { t } = useTranslation()
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [description, setDescription] = useState('')
-  const [siteName, setSiteName] = useState('')
   const [memo, setMemo] = useState('')
   const [priority, setPriority] = useState<Priority>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -34,9 +35,8 @@ export function AddItemPage() {
       if (ogp.title) setName(ogp.title)
       if (ogp.description) setDescription(ogp.description)
       if (ogp.image) setImageUrl(ogp.image)
-      if (ogp.siteName) setSiteName(ogp.siteName)
-    } catch (err) {
-      setError('Failed to fetch page info. You can enter details manually.')
+    } catch {
+      setError(t('addItem.fetchError'))
     } finally {
       setIsFetching(false)
     }
@@ -46,7 +46,7 @@ export function AddItemPage() {
     e.preventDefault()
 
     if (!name) {
-      setError('Name is required')
+      setError(t('addItem.nameRequired'))
       return
     }
 
@@ -59,15 +59,33 @@ export function AddItemPage() {
         url: url || null,
         imageUrl: imageUrl || null,
         description: description || null,
-        siteName: siteName || null,
         memo: memo || null,
         priority: priority || null,
       })
       navigate('/dashboard')
-    } catch (err) {
-      setError('Failed to add item')
+    } catch {
+      setError(t('addItem.addError'))
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const getPriorityButtonStyle = (_p: Priority, isSelected: boolean) => {
+    if (!isSelected) return 'outline'
+    return 'default'
+  }
+
+  const getPriorityColorClass = (p: Priority, isSelected: boolean) => {
+    if (!isSelected) return ''
+    switch (p) {
+      case 'high':
+        return 'bg-red-500 hover:bg-red-600 text-white'
+      case 'medium':
+        return 'bg-yellow-500 hover:bg-yellow-600 text-white'
+      case 'low':
+        return 'bg-blue-500 hover:bg-blue-600 text-white'
+      default:
+        return ''
     }
   }
 
@@ -75,9 +93,9 @@ export function AddItemPage() {
     <div className="max-w-2xl mx-auto">
       <Card>
         <CardHeader>
-          <CardTitle>Add New Item</CardTitle>
+          <CardTitle>{t('addItem.title')}</CardTitle>
           <CardDescription>
-            Enter a URL to auto-fill product info, or add details manually.
+            {t('addItem.description')}
           </CardDescription>
         </CardHeader>
 
@@ -92,7 +110,7 @@ export function AddItemPage() {
             {/* URL Input with Fetch button */}
             <div className="space-y-2">
               <label htmlFor="url" className="text-sm font-medium">
-                Product URL
+                {t('addItem.productUrl')}
               </label>
               <div className="flex gap-2">
                 <Input
@@ -109,7 +127,7 @@ export function AddItemPage() {
                   onClick={handleFetchOgp}
                   disabled={!url || isFetching}
                 >
-                  {isFetching ? 'Fetching...' : 'Fetch Info'}
+                  {isFetching ? t('addItem.fetching') : t('addItem.fetchInfo')}
                 </Button>
               </div>
             </div>
@@ -129,36 +147,21 @@ export function AddItemPage() {
             {/* Name */}
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium">
-                Name <span className="text-red-500">*</span>
+                {t('addItem.name')} <span className="text-red-500">*</span>
               </label>
               <Input
                 id="name"
                 type="text"
-                placeholder="Product name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
 
-            {/* Site Name */}
-            <div className="space-y-2">
-              <label htmlFor="siteName" className="text-sm font-medium">
-                Site Name
-              </label>
-              <Input
-                id="siteName"
-                type="text"
-                placeholder="e.g., Amazon, Rakuten"
-                value={siteName}
-                onChange={(e) => setSiteName(e.target.value)}
-              />
-            </div>
-
             {/* Image URL */}
             <div className="space-y-2">
               <label htmlFor="imageUrl" className="text-sm font-medium">
-                Image URL
+                {t('addItem.imageUrl')}
               </label>
               <Input
                 id="imageUrl"
@@ -172,11 +175,11 @@ export function AddItemPage() {
             {/* Description */}
             <div className="space-y-2">
               <label htmlFor="description" className="text-sm font-medium">
-                Description
+                {t('addItem.descriptionLabel')}
               </label>
               <textarea
                 id="description"
-                placeholder="Product description"
+                placeholder={t('addItem.descriptionPlaceholder')}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="flex w-full rounded-md border border-[hsl(var(--input))] bg-transparent px-3 py-2 text-sm ring-offset-[hsl(var(--background))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 min-h-[80px]"
@@ -185,30 +188,34 @@ export function AddItemPage() {
 
             {/* Priority */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Priority</label>
+              <label className="text-sm font-medium">{t('addItem.priorityLabel')}</label>
               <div className="flex gap-2">
-                {(['high', 'medium', 'low'] as const).map((p) => (
-                  <Button
-                    key={p}
-                    type="button"
-                    variant={priority === p ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setPriority(priority === p ? null : p)}
-                  >
-                    {p.charAt(0).toUpperCase() + p.slice(1)}
-                  </Button>
-                ))}
+                {(['high', 'medium', 'low'] as const).map((p) => {
+                  const isSelected = priority === p
+                  return (
+                    <Button
+                      key={p}
+                      type="button"
+                      variant={getPriorityButtonStyle(p, isSelected)}
+                      size="sm"
+                      className={getPriorityColorClass(p, isSelected)}
+                      onClick={() => setPriority(isSelected ? null : p)}
+                    >
+                      {t(`item.priority.${p}`)}
+                    </Button>
+                  )
+                })}
               </div>
             </div>
 
             {/* Memo */}
             <div className="space-y-2">
               <label htmlFor="memo" className="text-sm font-medium">
-                Memo
+                {t('addItem.memoLabel')}
               </label>
               <textarea
                 id="memo"
-                placeholder="Your notes..."
+                placeholder={t('addItem.memoPlaceholder')}
                 value={memo}
                 onChange={(e) => setMemo(e.target.value)}
                 className="flex w-full rounded-md border border-[hsl(var(--input))] bg-transparent px-3 py-2 text-sm ring-offset-[hsl(var(--background))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 min-h-[60px]"
@@ -217,15 +224,15 @@ export function AddItemPage() {
           </CardContent>
 
           <CardFooter className="flex gap-4">
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? t('addItem.adding') : t('addItem.addButton')}
+            </Button>
             <Button
               type="button"
               variant="outline"
               onClick={() => navigate('/dashboard')}
             >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Adding...' : 'Add Item'}
+              {t('addItem.cancelButton')}
             </Button>
           </CardFooter>
         </form>

@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/store/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 export function SignupPage() {
+  const { t } = useTranslation()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -22,8 +24,8 @@ export function SignupPage() {
     try {
       await register(email, password, name)
       navigate('/dashboard')
-    } catch (err) {
-      setError('Registration failed. Email may already be in use.')
+    } catch {
+      setError(t('auth.registrationFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -33,9 +35,9 @@ export function SignupPage() {
     <div className="flex items-center justify-center min-h-[60vh]">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Create an account</CardTitle>
+          <CardTitle>{t('auth.signup')}</CardTitle>
           <CardDescription>
-            Enter your information to create an account
+            {t('auth.signupDescription')}
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -47,12 +49,11 @@ export function SignupPage() {
             )}
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium">
-                Name
+                {t('auth.name')}
               </label>
               <Input
                 id="name"
                 type="text"
-                placeholder="Your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -60,7 +61,7 @@ export function SignupPage() {
             </div>
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium">
-                Email
+                {t('auth.email')}
               </label>
               <Input
                 id="email"
@@ -73,7 +74,7 @@ export function SignupPage() {
             </div>
             <div className="space-y-2">
               <label htmlFor="password" className="text-sm font-medium">
-                Password
+                {t('auth.password')}
               </label>
               <Input
                 id="password"
@@ -87,12 +88,12 @@ export function SignupPage() {
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Creating account...' : 'Sign Up'}
+              {isLoading ? t('auth.creatingAccount') : t('auth.signupButton')}
             </Button>
             <p className="text-sm text-[hsl(var(--muted-foreground))]">
-              Already have an account?{' '}
+              {t('auth.hasAccount')}{' '}
               <Link to="/login" className="text-[hsl(var(--primary))] hover:underline">
-                Login
+                {t('header.login')}
               </Link>
             </p>
           </CardFooter>

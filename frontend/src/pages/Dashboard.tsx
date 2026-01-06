@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useItemsStore } from '@/store/items'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -7,6 +8,7 @@ import { ItemCard } from '@/components/ItemCard'
 import type { Item } from '@/types'
 
 export function DashboardPage() {
+  const { t } = useTranslation()
   const { items, isLoading, fetchItems } = useItemsStore()
   const [searchQuery, setSearchQuery] = useState('')
   const [filter, setFilter] = useState<'all' | 'active' | 'purchased'>('all')
@@ -31,7 +33,7 @@ export function DashboardPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p>Loading...</p>
+        <p>{t('common.loading')}</p>
       </div>
     )
   }
@@ -39,15 +41,15 @@ export function DashboardPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">My Wishlist</h1>
+        <h1 className="text-2xl font-bold">{t('dashboard.title')}</h1>
         <Link to="/items/new">
-          <Button>Add Item</Button>
+          <Button>{t('dashboard.addItem')}</Button>
         </Link>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <Input
-          placeholder="Search items..."
+          placeholder={t('dashboard.searchPlaceholder')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="sm:max-w-xs"
@@ -58,21 +60,21 @@ export function DashboardPage() {
             size="sm"
             onClick={() => setFilter('all')}
           >
-            All ({items.length})
+            {t('dashboard.filterAll')} ({items.length})
           </Button>
           <Button
             variant={filter === 'active' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setFilter('active')}
           >
-            Active ({items.filter((i) => !i.isPurchased).length})
+            {t('dashboard.filterActive')} ({items.filter((i) => !i.isPurchased).length})
           </Button>
           <Button
             variant={filter === 'purchased' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setFilter('purchased')}
           >
-            Purchased ({items.filter((i) => i.isPurchased).length})
+            {t('dashboard.filterPurchased')} ({items.filter((i) => i.isPurchased).length})
           </Button>
         </div>
       </div>
@@ -81,12 +83,12 @@ export function DashboardPage() {
         <div className="text-center py-12">
           <p className="text-[hsl(var(--muted-foreground))] mb-4">
             {items.length === 0
-              ? "You haven't added any items yet."
-              : 'No items match your search.'}
+              ? t('dashboard.noItems')
+              : t('dashboard.noSearchResults')}
           </p>
           {items.length === 0 && (
             <Link to="/items/new">
-              <Button>Add Your First Item</Button>
+              <Button>{t('dashboard.addFirstItem')}</Button>
             </Link>
           )}
         </div>

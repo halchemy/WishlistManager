@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { Item } from '@/types'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -9,16 +10,43 @@ interface ItemCardProps {
 }
 
 export function ItemCard({ item, onEdit }: ItemCardProps) {
+  const { t } = useTranslation()
   const { deleteItem, updateItem } = useItemsStore()
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this item?')) {
+    if (window.confirm(t('item.confirmDelete'))) {
       await deleteItem(item.id)
     }
   }
 
   const handleTogglePurchased = async () => {
     await updateItem(item.id, { isPurchased: !item.isPurchased })
+  }
+
+  const getPriorityStyle = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return 'bg-red-100 text-red-700'
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-700'
+      case 'low':
+        return 'bg-blue-100 text-blue-700'
+      default:
+        return 'bg-gray-100 text-gray-700'
+    }
+  }
+
+  const getPriorityLabel = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return t('item.priority.high')
+      case 'medium':
+        return t('item.priority.medium')
+      case 'low':
+        return t('item.priority.low')
+      default:
+        return priority
+    }
   }
 
   return (
@@ -36,7 +64,7 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
             />
           ) : (
             <div className="w-24 h-24 bg-[hsl(var(--muted))] rounded-md flex-shrink-0 flex items-center justify-center">
-              <span className="text-[hsl(var(--muted-foreground))] text-xs">No image</span>
+              <span className="text-[hsl(var(--muted-foreground))] text-xs">{t('common.noImage')}</span>
             </div>
           )}
 
@@ -47,24 +75,12 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
               </h3>
               {item.priority && (
                 <span
-                  className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
-                    item.priority === 'high'
-                      ? 'bg-red-100 text-red-700'
-                      : item.priority === 'medium'
-                      ? 'bg-yellow-100 text-yellow-700'
-                      : 'bg-gray-100 text-gray-700'
-                  }`}
+                  className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${getPriorityStyle(item.priority)}`}
                 >
-                  {item.priority}
+                  {getPriorityLabel(item.priority)}
                 </span>
               )}
             </div>
-
-            {item.siteName && (
-              <p className="text-sm text-[hsl(var(--muted-foreground))]">
-                {item.siteName}
-              </p>
-            )}
 
             {item.description && (
               <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1 line-clamp-2">
@@ -74,7 +90,7 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
 
             {item.memo && (
               <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1 italic">
-                Memo: {item.memo}
+                {t('item.memo')}: {item.memo}
               </p>
             )}
 
@@ -86,7 +102,7 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
                   rel="noopener noreferrer"
                   className="text-sm text-[hsl(var(--primary))] hover:underline"
                 >
-                  View Product
+                  {t('item.viewProduct')}
                 </a>
               )}
               <div className="flex-1" />
@@ -95,13 +111,13 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
                 size="sm"
                 onClick={handleTogglePurchased}
               >
-                {item.isPurchased ? 'Unmark' : 'Purchased'}
+                {item.isPurchased ? t('item.unmark') : t('item.markPurchased')}
               </Button>
               <Button variant="ghost" size="sm" onClick={() => onEdit(item)}>
-                Edit
+                {t('common.edit')}
               </Button>
               <Button variant="ghost" size="sm" onClick={handleDelete}>
-                Delete
+                {t('common.delete')}
               </Button>
             </div>
           </div>

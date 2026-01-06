@@ -1,0 +1,96 @@
+{
+  "common": {
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "search": "検索",
+    "noImage": "画像なし"
+  },
+  "header": {
+    "title": "WishlistManager",
+    "dashboard": "ダッシュボード",
+    "login": "ログイン",
+    "signup": "新規登録",
+    "logout": "ログアウト"
+  },
+  "home": {
+    "title": "WishlistManager",
+    "subtitle": "様々なショッピングサイトのほしいものを一元管理",
+    "getStarted": "はじめる",
+    "goToDashboard": "ダッシュボードへ",
+    "feature1Title": "かんたん登録",
+    "feature1Desc": "URLを貼り付けるだけで商品情報を自動取得",
+    "feature2Title": "一元管理",
+    "feature2Desc": "どのショッピングサイトの商品も一箇所で管理",
+    "feature3Title": "整理整頓",
+    "feature3Desc": "カテゴリ分け、優先度設定、購入済み管理"
+  },
+  "auth": {
+    "login": "ログイン",
+    "signup": "新規登録",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "name": "名前",
+    "loginButton": "ログイン",
+    "signupButton": "登録する",
+    "loggingIn": "ログイン中...",
+    "creatingAccount": "アカウント作成中...",
+    "loginDescription": "アカウント情報を入力してログイン",
+    "signupDescription": "アカウント情報を入力して登録",
+    "noAccount": "アカウントをお持ちでない方は",
+    "hasAccount": "すでにアカウントをお持ちの方は",
+    "invalidCredentials": "メールアドレスまたはパスワードが正しくありません",
+    "registrationFailed": "登録に失敗しました。このメールアドレスは既に使用されている可能性があります。"
+  },
+  "dashboard": {
+    "title": "ほしいものリスト",
+    "addItem": "アイテムを追加",
+    "searchPlaceholder": "アイテムを検索...",
+    "filterAll": "すべて",
+    "filterActive": "未購入",
+    "filterPurchased": "購入済み",
+    "noItems": "まだアイテムが登録されていません。",
+    "noSearchResults": "検索結果が見つかりませんでした。",
+    "addFirstItem": "最初のアイテムを追加"
+  },
+  "item": {
+    "viewProduct": "商品ページを見る",
+    "purchased": "購入済み",
+    "markPurchased": "購入済みにする",
+    "unmark": "未購入に戻す",
+    "memo": "メモ",
+    "priority": {
+      "high": "高",
+      "medium": "中",
+      "low": "低"
+    },
+    "confirmDelete": "このアイテムを削除してもよろしいですか？"
+  },
+  "addItem": {
+    "title": "新しいアイテムを追加",
+    "description": "URLを入力して商品情報を自動取得、または手動で入力",
+    "productUrl": "商品URL",
+    "fetchInfo": "情報を取得",
+    "fetching": "取得中...",
+    "name": "商品名",
+    "nameRequired": "商品名は必須です",
+    "imageUrl": "画像URL",
+    "descriptionLabel": "説明",
+    "descriptionPlaceholder": "商品の説明",
+    "priorityLabel": "優先度",
+    "memoLabel": "メモ",
+    "memoPlaceholder": "メモを入力...",
+    "addButton": "アイテムを追加",
+    "adding": "追加中...",
+    "cancelButton": "キャンセル",
+    "fetchError": "ページ情報の取得に失敗しました。手動で入力してください。",
+    "addError": "アイテムの追加に失敗しました"
+  },
+  "language": {
+    "ja": "日本語",
+    "en": "English"
+  }
+}
