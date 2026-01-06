@@ -14,7 +14,6 @@ export interface Item {
   user_id: string
   name: string
   url: string | null
-  image_url: string | null
   description: string | null
   site_name: string | null
   memo: string | null

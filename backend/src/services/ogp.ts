@@ -4,7 +4,6 @@ import * as cheerio from 'cheerio'
 export interface OgpData {
   title: string | null
   description: string | null
-  image: string | null
   siteName: string | null
   url: string
 }
@@ -26,19 +25,16 @@ export async function fetchOgp(url: string): Promise<OgpData> {
     // Get OGP data
     const ogTitle = $('meta[property="og:title"]').attr('content')
     const ogDescription = $('meta[property="og:description"]').attr('content')
-    const ogImage = $('meta[property="og:image"]').attr('content')
     const ogSiteName = $('meta[property="og:site_name"]').attr('content')
 
     // Fallbacks
     const title = ogTitle || $('title').text() || null
     const description = ogDescription || $('meta[name="description"]').attr('content') || null
-    const image = ogImage || null
     const siteName = ogSiteName || null
 
     return {
       title,
       description,
-      image,
       siteName,
       url,
     }
@@ -47,7 +43,6 @@ export async function fetchOgp(url: string): Promise<OgpData> {
     return {
       title: null,
       description: null,
-      image: null,
       siteName: null,
       url,
     }

@@ -6,8 +6,7 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "search": "Search",
-    "noImage": "No image"
+    "search": "Search"
   },
   "header": {
     "title": "WishlistManager",
@@ -77,7 +76,6 @@
     "fetching": "Fetching...",
     "name": "Name",
     "nameRequired": "Name is required",
-    "imageUrl": "Image URL",
     "descriptionLabel": "Description",
     "descriptionPlaceholder": "Product description",
     "priorityLabel": "Priority",

@@ -11,7 +11,6 @@ export interface Item {
   userId: string
   name: string
   url: string | null
-  imageUrl: string | null
   description: string | null
   siteName: string | null
   memo: string | null
@@ -33,7 +32,6 @@ export interface Category {
 export interface OgpData {
   title: string | null
   description: string | null
-  image: string | null
   siteName: string | null
   url: string
 }

@@ -13,7 +13,6 @@ export function AddItemPage() {
   const { t } = useTranslation()
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
   const [description, setDescription] = useState('')
   const [memo, setMemo] = useState('')
   const [priority, setPriority] = useState<Priority>(null)
@@ -34,7 +33,6 @@ export function AddItemPage() {
       const { ogp } = await ogpApi.fetch(url)
       if (ogp.title) setName(ogp.title)
       if (ogp.description) setDescription(ogp.description)
-      if (ogp.image) setImageUrl(ogp.image)
     } catch {
       setError(t('addItem.fetchError'))
     } finally {
@@ -57,7 +55,6 @@ export function AddItemPage() {
       await addItem({
         name,
         url: url || null,
-        imageUrl: imageUrl || null,
         description: description || null,
         memo: memo || null,
         priority: priority || null,
@@ -132,18 +129,6 @@ export function AddItemPage() {
               </div>
             </div>
 
-            {/* Preview if image exists */}
-            {imageUrl && (
-              <div className="flex justify-center">
-                <img
-                  src={imageUrl}
-                  alt="Product preview"
-                  className="max-h-48 rounded-md object-contain"
-                  onError={() => setImageUrl('')}
-                />
-              </div>
-            )}
-
             {/* Name */}
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium">
@@ -155,20 +140,6 @@ export function AddItemPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-              />
-            </div>
-
-            {/* Image URL */}
-            <div className="space-y-2">
-              <label htmlFor="imageUrl" className="text-sm font-medium">
-                {t('addItem.imageUrl')}
-              </label>
-              <Input
-                id="imageUrl"
-                type="url"
-                placeholder="https://..."
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
               />
             </div>
 

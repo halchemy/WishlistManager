@@ -16,7 +16,6 @@ function toApiItem(item: Item) {
     userId: item.user_id,
     name: item.name,
     url: item.url,
-    imageUrl: item.image_url,
     description: item.description,
     siteName: item.site_name,
     memo: item.memo,
@@ -67,7 +66,7 @@ router.get('/:id', (req: AuthRequest, res) => {
 // Create item
 router.post('/', (req: AuthRequest, res) => {
   try {
-    const { name, url, imageUrl, description, siteName, memo, priority, categoryId } = req.body
+    const { name, url, description, siteName, memo, priority, categoryId } = req.body
 
     if (!name) {
       res.status(400).json({ error: 'Name is required' })
@@ -78,9 +77,9 @@ router.post('/', (req: AuthRequest, res) => {
     const now = new Date().toISOString()
 
     db.prepare(`
-      INSERT INTO items (id, user_id, name, url, image_url, description, site_name, memo, priority, category_id, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(id, req.user!.id, name, url || null, imageUrl || null, description || null, siteName || null, memo || null, priority || null, categoryId || null, now, now)
+      INSERT INTO items (id, user_id, name, url, description, site_name, memo, priority, category_id, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(id, req.user!.id, name, url || null, description || null, siteName || null, memo || null, priority || null, categoryId || null, now, now)
 
     const item = db.prepare('SELECT * FROM items WHERE id = ?').get(id) as Item
 
@@ -104,14 +103,13 @@ router.put('/:id', (req: AuthRequest, res) => {
       return
     }
 
-    const { name, url, imageUrl, description, siteName, memo, priority, isPurchased, categoryId } = req.body
+    const { name, url, description, siteName, memo, priority, isPurchased, categoryId } = req.body
     const now = new Date().toISOString()
 
     db.prepare(`
       UPDATE items SET
         name = ?,
         url = ?,
-        image_url = ?,
         description = ?,
         site_name = ?,
         memo = ?,
@@ -123,7 +121,6 @@ router.put('/:id', (req: AuthRequest, res) => {
     `).run(
       name ?? existingItem.name,
       url ?? existingItem.url,
-      imageUrl ?? existingItem.image_url,
       description ?? existingItem.description,
       siteName ?? existingItem.site_name,
       memo ?? existingItem.memo,

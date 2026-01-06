@@ -52,23 +52,7 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
   return (
     <Card className={item.isPurchased ? 'opacity-60' : ''}>
       <CardContent className="p-4">
-        <div className="flex gap-4">
-          {item.imageUrl ? (
-            <img
-              src={item.imageUrl}
-              alt={item.name}
-              className="w-24 h-24 object-cover rounded-md flex-shrink-0"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none'
-              }}
-            />
-          ) : (
-            <div className="w-24 h-24 bg-[hsl(var(--muted))] rounded-md flex-shrink-0 flex items-center justify-center">
-              <span className="text-[hsl(var(--muted-foreground))] text-xs">{t('common.noImage')}</span>
-            </div>
-          )}
-
-          <div className="flex-1 min-w-0">
+        <div>
             <div className="flex items-start justify-between gap-2">
               <h3 className={`font-semibold truncate ${item.isPurchased ? 'line-through' : ''}`}>
                 {item.name}
@@ -120,7 +104,6 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
                 {t('common.delete')}
               </Button>
             </div>
-          </div>
         </div>
       </CardContent>
     </Card>
