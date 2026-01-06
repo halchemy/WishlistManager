@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { User, Item, OgpData } from '@/types'
+import type { User, Item, OgpData, Category } from '@/types'
 
 const api = axios.create({
   baseURL: '/api',
@@ -74,6 +74,28 @@ export const ogpApi = {
   fetch: async (url: string) => {
     const response = await api.post<{ ogp: OgpData }>('/ogp/fetch', { url })
     return response.data
+  },
+}
+
+// Categories API
+export const categoriesApi = {
+  getAll: async () => {
+    const response = await api.get<{ categories: Category[] }>('/categories')
+    return response.data
+  },
+
+  create: async (category: Partial<Category>) => {
+    const response = await api.post<{ category: Category }>('/categories', category)
+    return response.data
+  },
+
+  update: async (id: string, category: Partial<Category>) => {
+    const response = await api.put<{ category: Category }>(`/categories/${id}`, category)
+    return response.data
+  },
+
+  delete: async (id: string) => {
+    await api.delete(`/categories/${id}`)
   },
 }
 

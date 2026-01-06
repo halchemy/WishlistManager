@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useItemsStore } from '@/store/items'
+import { useCategoriesStore } from '@/store/categories'
 import { ogpApi } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,12 +17,18 @@ export function AddItemPage() {
   const [description, setDescription] = useState('')
   const [memo, setMemo] = useState('')
   const [priority, setPriority] = useState<Priority>(null)
+  const [categoryId, setCategoryId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
   const [error, setError] = useState('')
 
   const { addItem } = useItemsStore()
+  const { categories, fetchCategories } = useCategoriesStore()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    fetchCategories()
+  }, [fetchCategories])
 
   const handleFetchOgp = async () => {
     if (!url) return
@@ -58,6 +65,7 @@ export function AddItemPage() {
         description: description || null,
         memo: memo || null,
         priority: priority || null,
+        categoryId: categoryId || null,
       })
       navigate('/dashboard')
     } catch {
@@ -155,6 +163,26 @@ export function AddItemPage() {
                 onChange={(e) => setDescription(e.target.value)}
                 className="flex w-full rounded-md border border-[hsl(var(--input))] bg-transparent px-3 py-2 text-sm ring-offset-[hsl(var(--background))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 min-h-[80px]"
               />
+            </div>
+
+            {/* Category */}
+            <div className="space-y-2">
+              <label htmlFor="category" className="text-sm font-medium">
+                {t('addItem.categoryLabel')}
+              </label>
+              <select
+                id="category"
+                value={categoryId || ''}
+                onChange={(e) => setCategoryId(e.target.value || null)}
+                className="flex w-full rounded-md border border-[hsl(var(--input))] bg-transparent px-3 py-2 text-sm ring-offset-[hsl(var(--background))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2"
+              >
+                <option value="">{t('addItem.noCategory')}</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Priority */}

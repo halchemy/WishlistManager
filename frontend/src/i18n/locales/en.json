@@ -78,6 +78,8 @@
     "nameRequired": "Name is required",
     "descriptionLabel": "Description",
     "descriptionPlaceholder": "Product description",
+    "categoryLabel": "Category",
+    "noCategory": "No category",
     "priorityLabel": "Priority",
     "memoLabel": "Memo",
     "memoPlaceholder": "Your notes...",
@@ -86,6 +88,13 @@
     "cancelButton": "Cancel",
     "fetchError": "Failed to fetch page info. You can enter details manually.",
     "addError": "Failed to add item"
+  },
+  "category": {
+    "title": "Categories",
+    "all": "All",
+    "add": "Add",
+    "addNew": "Add Category",
+    "namePlaceholder": "Enter category name"
   },
   "language": {
     "ja": "日本語",

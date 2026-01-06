@@ -78,6 +78,8 @@
     "nameRequired": "商品名は必須です",
     "descriptionLabel": "説明",
     "descriptionPlaceholder": "商品の説明",
+    "categoryLabel": "分類",
+    "noCategory": "分類なし",
     "priorityLabel": "優先度",
     "memoLabel": "メモ",
     "memoPlaceholder": "メモを入力...",
@@ -86,6 +88,13 @@
     "cancelButton": "キャンセル",
     "fetchError": "ページ情報の取得に失敗しました。手動で入力してください。",
     "addError": "アイテムの追加に失敗しました"
+  },
+  "category": {
+    "title": "分類",
+    "all": "すべて",
+    "add": "追加",
+    "addNew": "分類を追加",
+    "namePlaceholder": "分類名を入力"
   },
   "language": {
     "ja": "日本語",

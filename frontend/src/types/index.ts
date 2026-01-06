@@ -55,3 +55,12 @@ export interface ItemsState {
   updateItem: (id: string, item: Partial<Item>) => Promise<void>
   deleteItem: (id: string) => Promise<void>
 }
+
+export interface CategoriesState {
+  categories: Category[]
+  isLoading: boolean
+  fetchCategories: () => Promise<void>
+  addCategory: (category: Partial<Category>) => Promise<void>
+  updateCategory: (id: string, category: Partial<Category>) => Promise<void>
+  deleteCategory: (id: string) => Promise<void>
+}
