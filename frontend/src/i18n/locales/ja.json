@@ -51,6 +51,10 @@
     "filterAll": "すべて",
     "filterActive": "未購入",
     "filterPurchased": "購入済み",
+    "sortBy": "並び替え",
+    "sortNewest": "新しい順",
+    "sortOldest": "古い順",
+    "sortPriority": "優先度順",
     "noItems": "まだアイテムが登録されていません。",
     "noSearchResults": "検索結果が見つかりませんでした。",
     "addFirstItem": "最初のアイテムを追加"
@@ -100,7 +104,8 @@
     "all": "すべて",
     "add": "追加",
     "addNew": "分類を追加",
-    "namePlaceholder": "分類名を入力"
+    "namePlaceholder": "分類名を入力",
+    "confirmDelete": "この分類を削除してもよろしいですか？"
   },
   "language": {
     "ja": "日本語",

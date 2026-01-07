@@ -9,12 +9,15 @@ import { ItemCard } from '@/components/ItemCard'
 import { EditItemModal } from '@/components/EditItemModal'
 import type { Item } from '@/types'
 
+type SortOption = 'newest' | 'oldest' | 'priority'
+
 export function DashboardPage() {
   const { t } = useTranslation()
   const { items, isLoading, fetchItems } = useItemsStore()
-  const { categories, fetchCategories, addCategory } = useCategoriesStore()
+  const { categories, fetchCategories, addCategory, deleteCategory } = useCategoriesStore()
   const [searchQuery, setSearchQuery] = useState('')
   const [filter, setFilter] = useState<'all' | 'active' | 'purchased'>('all')
+  const [sortBy, setSortBy] = useState<SortOption>('newest')
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
   const [newCategoryName, setNewCategoryName] = useState('')
   const [isAddingCategory, setIsAddingCategory] = useState(false)
@@ -25,16 +28,41 @@ export function DashboardPage() {
     fetchCategories()
   }, [fetchItems, fetchCategories])
 
-  const filteredItems = items.filter((item) => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesFilter =
-      filter === 'all' ||
-      (filter === 'active' && !item.isPurchased) ||
-      (filter === 'purchased' && item.isPurchased)
-    const matchesCategory =
-      selectedCategoryId === null || item.categoryId === selectedCategoryId
-    return matchesSearch && matchesFilter && matchesCategory
-  })
+  const getPriorityValue = (priority: string | null): number => {
+    switch (priority) {
+      case 'high':
+        return 3
+      case 'medium':
+        return 2
+      case 'low':
+        return 1
+      default:
+        return 0
+    }
+  }
+
+  const filteredAndSortedItems = items
+    .filter((item) => {
+      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      const matchesFilter =
+        filter === 'all' ||
+        (filter === 'active' && !item.isPurchased) ||
+        (filter === 'purchased' && item.isPurchased)
+      const matchesCategory =
+        selectedCategoryId === null || item.categoryId === selectedCategoryId
+      return matchesSearch && matchesFilter && matchesCategory
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'priority':
+          return getPriorityValue(b.priority) - getPriorityValue(a.priority)
+        case 'oldest':
+          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        case 'newest':
+        default:
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      }
+    })
 
   const handleEdit = (item: Item) => {
     setEditingItem(item)
@@ -48,6 +76,20 @@ export function DashboardPage() {
       setIsAddingCategory(false)
     } catch {
       // Handle error silently
+    }
+  }
+
+  const handleDeleteCategory = async (categoryId: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (window.confirm(t('category.confirmDelete'))) {
+      try {
+        await deleteCategory(categoryId)
+        if (selectedCategoryId === categoryId) {
+          setSelectedCategoryId(null)
+        }
+      } catch {
+        // Handle error silently
+      }
     }
   }
 
@@ -91,28 +133,41 @@ export function DashboardPage() {
 
             {/* Category List */}
             {categories.map((category) => (
-              <button
+              <div
                 key={category.id}
-                onClick={() => setSelectedCategoryId(category.id)}
-                className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                className={`group flex items-center rounded-md text-sm transition-colors ${
                   selectedCategoryId === category.id
                     ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]'
                     : 'hover:bg-[hsl(var(--muted))]'
                 }`}
               >
-                <span className="flex items-center justify-between">
-                  <span className="flex items-center gap-2">
-                    {category.color && (
-                      <span
-                        className="w-3 h-3 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: category.color }}
-                      />
-                    )}
-                    <span className="truncate">{category.name}</span>
+                <button
+                  onClick={() => setSelectedCategoryId(category.id)}
+                  className="flex-1 text-left px-3 py-2"
+                >
+                  <span className="flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      {category.color && (
+                        <span
+                          className="w-3 h-3 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: category.color }}
+                        />
+                      )}
+                      <span className="truncate">{category.name}</span>
+                    </span>
+                    <span className="text-xs opacity-70">({getItemCountForCategory(category.id)})</span>
                   </span>
-                  <span className="text-xs opacity-70">({getItemCountForCategory(category.id)})</span>
-                </span>
-              </button>
+                </button>
+                <button
+                  onClick={(e) => handleDeleteCategory(category.id, e)}
+                  className={`px-2 py-2 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-500 ${
+                    selectedCategoryId === category.id ? 'text-[hsl(var(--primary-foreground))]' : ''
+                  }`}
+                  title={t('common.delete')}
+                >
+                  ×
+                </button>
+              </div>
             ))}
           </div>
 
@@ -201,7 +256,35 @@ export function DashboardPage() {
           </div>
         </div>
 
-        {filteredItems.length === 0 ? (
+        {/* Sort Options */}
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-sm text-[hsl(var(--muted-foreground))]">{t('dashboard.sortBy')}:</span>
+          <div className="flex gap-1">
+            <Button
+              variant={sortBy === 'newest' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setSortBy('newest')}
+            >
+              {t('dashboard.sortNewest')}
+            </Button>
+            <Button
+              variant={sortBy === 'oldest' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setSortBy('oldest')}
+            >
+              {t('dashboard.sortOldest')}
+            </Button>
+            <Button
+              variant={sortBy === 'priority' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setSortBy('priority')}
+            >
+              {t('dashboard.sortPriority')}
+            </Button>
+          </div>
+        </div>
+
+        {filteredAndSortedItems.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-[hsl(var(--muted-foreground))] mb-4">
               {items.length === 0
@@ -216,7 +299,7 @@ export function DashboardPage() {
           </div>
         ) : (
           <div className="grid gap-4">
-            {filteredItems.map((item) => (
+            {filteredAndSortedItems.map((item) => (
               <ItemCard key={item.id} item={item} onEdit={handleEdit} />
             ))}
           </div>
