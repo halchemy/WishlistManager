@@ -44,13 +44,13 @@ export function LanguageSwitcher() {
       </Button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-md shadow-lg z-50 min-w-[120px]">
+        <div className="absolute right-0 top-full mt-1 bg-[hsl(var(--card))] border-2 border-[hsl(var(--border))] rounded-xl shadow-lg z-50 min-w-[120px] overflow-hidden">
           {languages.map((lang) => (
             <button
               key={lang.code}
               onClick={() => handleLanguageChange(lang.code)}
-              className={`w-full text-left px-3 py-2 text-sm hover:bg-[hsl(var(--muted))] transition-colors ${
-                lang.code === i18n.language ? 'bg-[hsl(var(--muted))] font-medium' : ''
+              className={`w-full text-left px-4 py-2 text-sm hover:bg-[hsl(var(--muted))] transition-colors ${
+                lang.code === i18n.language ? 'bg-[hsl(var(--muted))] font-medium text-[hsl(var(--primary))]' : ''
               }`}
             >
               {lang.label}

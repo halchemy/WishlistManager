@@ -32,20 +32,20 @@ export function HomePage() {
       )}
 
       <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl">
-        <div className="p-6 rounded-lg border border-[hsl(var(--border))]">
-          <h3 className="font-semibold mb-2">{t('home.feature1Title')}</h3>
+        <div className="p-6 rounded-2xl border-2 border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-md hover:shadow-lg transition-shadow">
+          <h3 className="font-semibold mb-2 text-[hsl(var(--primary))]">{t('home.feature1Title')}</h3>
           <p className="text-sm text-[hsl(var(--muted-foreground))]">
             {t('home.feature1Desc')}
           </p>
         </div>
-        <div className="p-6 rounded-lg border border-[hsl(var(--border))]">
-          <h3 className="font-semibold mb-2">{t('home.feature2Title')}</h3>
+        <div className="p-6 rounded-2xl border-2 border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-md hover:shadow-lg transition-shadow">
+          <h3 className="font-semibold mb-2 text-[hsl(var(--primary))]">{t('home.feature2Title')}</h3>
           <p className="text-sm text-[hsl(var(--muted-foreground))]">
             {t('home.feature2Desc')}
           </p>
         </div>
-        <div className="p-6 rounded-lg border border-[hsl(var(--border))]">
-          <h3 className="font-semibold mb-2">{t('home.feature3Title')}</h3>
+        <div className="p-6 rounded-2xl border-2 border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-md hover:shadow-lg transition-shadow">
+          <h3 className="font-semibold mb-2 text-[hsl(var(--primary))]">{t('home.feature3Title')}</h3>
           <p className="text-sm text-[hsl(var(--muted-foreground))]">
             {t('home.feature3Desc')}
           </p>

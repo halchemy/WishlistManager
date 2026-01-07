@@ -26,13 +26,13 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
   const getPriorityStyle = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-100 text-red-700'
+        return 'bg-pink-100 text-pink-600 border border-pink-200'
       case 'medium':
-        return 'bg-yellow-100 text-yellow-700'
+        return 'bg-amber-100 text-amber-600 border border-amber-200'
       case 'low':
-        return 'bg-blue-100 text-blue-700'
+        return 'bg-sky-100 text-sky-600 border border-sky-200'
       default:
-        return 'bg-gray-100 text-gray-700'
+        return 'bg-gray-100 text-gray-600 border border-gray-200'
     }
   }
 
@@ -59,7 +59,7 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
               </h3>
               {item.priority && (
                 <span
-                  className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${getPriorityStyle(item.priority)}`}
+                  className={`text-xs px-3 py-1 rounded-full flex-shrink-0 font-medium ${getPriorityStyle(item.priority)}`}
                 >
                   {getPriorityLabel(item.priority)}
                 </span>

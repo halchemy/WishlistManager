@@ -112,16 +112,16 @@ export function DashboardPage() {
     <div className="flex gap-6">
       {/* Category Sidebar */}
       <div className="w-64 flex-shrink-0">
-        <div className="bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--border))] p-4">
+        <div className="bg-[hsl(var(--card))] rounded-2xl border-2 border-[hsl(var(--border))] p-4 shadow-md">
           <h2 className="font-semibold mb-4">{t('category.title')}</h2>
 
           <div className="space-y-1">
             {/* All Items */}
             <button
               onClick={() => setSelectedCategoryId(null)}
-              className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+              className={`w-full text-left px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                 selectedCategoryId === null
-                  ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]'
+                  ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-sm'
                   : 'hover:bg-[hsl(var(--muted))]'
               }`}
             >
@@ -135,9 +135,9 @@ export function DashboardPage() {
             {categories.map((category) => (
               <div
                 key={category.id}
-                className={`group flex items-center rounded-md text-sm transition-colors ${
+                className={`group flex items-center rounded-xl text-sm font-medium transition-all ${
                   selectedCategoryId === category.id
-                    ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]'
+                    ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-sm'
                     : 'hover:bg-[hsl(var(--muted))]'
                 }`}
               >
