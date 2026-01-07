@@ -22,11 +22,6 @@ export function Header() {
               <span className="text-sm text-[hsl(var(--muted-foreground))]">
                 {user?.name}
               </span>
-              <Link to="/dashboard">
-                <Button variant="ghost" size="sm">
-                  {t('header.dashboard')}
-                </Button>
-              </Link>
               <Button variant="outline" size="sm" onClick={logout}>
                 {t('header.logout')}
               </Button>

@@ -12,7 +12,7 @@ export function LanguageSwitcher() {
 
   return (
     <Button variant="ghost" size="sm" onClick={toggleLanguage}>
-      {i18n.language === 'ja' ? 'EN' : 'JA'}
+      {i18n.language === 'ja' ? 'English' : '日本語'}
     </Button>
   )
 }
