@@ -6,6 +6,7 @@ import { useCategoriesStore } from '@/store/categories'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ItemCard } from '@/components/ItemCard'
+import { EditItemModal } from '@/components/EditItemModal'
 import type { Item } from '@/types'
 
 export function DashboardPage() {
@@ -17,6 +18,7 @@ export function DashboardPage() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
   const [newCategoryName, setNewCategoryName] = useState('')
   const [isAddingCategory, setIsAddingCategory] = useState(false)
+  const [editingItem, setEditingItem] = useState<Item | null>(null)
 
   useEffect(() => {
     fetchItems()
@@ -34,8 +36,8 @@ export function DashboardPage() {
     return matchesSearch && matchesFilter && matchesCategory
   })
 
-  const handleEdit = (_item: Item) => {
-    // TODO: Implement edit modal or navigate to edit page
+  const handleEdit = (item: Item) => {
+    setEditingItem(item)
   }
 
   const handleAddCategory = async () => {
@@ -220,6 +222,14 @@ export function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Edit Modal */}
+      {editingItem && (
+        <EditItemModal
+          item={editingItem}
+          onClose={() => setEditingItem(null)}
+        />
+      )}
     </div>
   )
 }

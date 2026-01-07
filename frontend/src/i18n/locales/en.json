@@ -89,6 +89,12 @@
     "fetchError": "Failed to fetch page info. You can enter details manually.",
     "addError": "Failed to add item"
   },
+  "editItem": {
+    "title": "Edit Item",
+    "updateButton": "Update",
+    "updating": "Updating...",
+    "updateError": "Failed to update item"
+  },
   "category": {
     "title": "Categories",
     "all": "All",

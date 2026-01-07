@@ -89,6 +89,12 @@
     "fetchError": "ページ情報の取得に失敗しました。手動で入力してください。",
     "addError": "アイテムの追加に失敗しました"
   },
+  "editItem": {
+    "title": "アイテムを編集",
+    "updateButton": "更新",
+    "updating": "更新中...",
+    "updateError": "アイテムの更新に失敗しました"
+  },
   "category": {
     "title": "分類",
     "all": "すべて",
