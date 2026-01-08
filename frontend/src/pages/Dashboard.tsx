@@ -216,10 +216,18 @@ export function DashboardPage() {
             {isAddingCategory ? (
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <span
-                    className="w-6 h-6 rounded-full flex-shrink-0 border-2 border-white shadow-sm"
-                    style={{ backgroundColor: newCategoryColor }}
-                  />
+                  <label className="relative cursor-pointer">
+                    <span
+                      className="block w-6 h-6 rounded-full flex-shrink-0 border-2 border-white shadow-sm hover:scale-110 transition-transform"
+                      style={{ backgroundColor: newCategoryColor }}
+                    />
+                    <input
+                      type="color"
+                      value={hslToHex(newCategoryColor)}
+                      onChange={(e) => setNewCategoryColor(e.target.value)}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                  </label>
                   <Input
                     placeholder={t('category.namePlaceholder')}
                     value={newCategoryName}
@@ -233,18 +241,6 @@ export function DashboardPage() {
                     }}
                     autoFocus
                     className="flex-1"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={hslToHex(newCategoryColor)}
-                    onChange={(e) => setNewCategoryColor(e.target.value)}
-                    className="w-full h-8 rounded-lg cursor-pointer border-0 p-0"
-                    style={{
-                      WebkitAppearance: 'none',
-                      background: 'linear-gradient(to right, hsl(0,70%,55%), hsl(60,70%,55%), hsl(120,70%,55%), hsl(180,70%,55%), hsl(240,70%,55%), hsl(300,70%,55%), hsl(360,70%,55%))'
-                    }}
                   />
                 </div>
                 <div className="flex gap-2">
