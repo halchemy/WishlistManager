@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Item } from '@/types'
 import { Card, CardContent } from '@/components/ui/card'
@@ -12,6 +13,7 @@ interface ItemCardProps {
 export function ItemCard({ item, onEdit }: ItemCardProps) {
   const { t } = useTranslation()
   const { deleteItem, updateItem } = useItemsStore()
+  const [showMemo, setShowMemo] = useState(false)
 
   const handleDelete = async () => {
     if (window.confirm(t('item.confirmDelete'))) {
@@ -72,13 +74,33 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
               </p>
             )}
 
-            {item.memo && (
-              <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1 italic">
-                {t('item.memo')}: {item.memo}
-              </p>
-            )}
-
             <div className="flex items-center gap-2 mt-3">
+              {item.memo && (
+                <div className="relative">
+                  <button
+                    onMouseEnter={() => setShowMemo(true)}
+                    onMouseLeave={() => setShowMemo(false)}
+                    onFocus={() => setShowMemo(true)}
+                    onBlur={() => setShowMemo(false)}
+                    className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] transition-colors p-1"
+                    aria-label={t('item.memo')}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                      <line x1="10" y1="9" x2="8" y2="9"/>
+                    </svg>
+                  </button>
+                  {showMemo && (
+                    <div className="absolute left-0 bottom-full mb-2 z-50 w-64 p-3 bg-[hsl(var(--card))] border-2 border-[hsl(var(--border))] rounded-xl shadow-lg">
+                      <p className="text-xs font-medium text-[hsl(var(--primary))] mb-1">{t('item.memo')}</p>
+                      <p className="text-sm text-[hsl(var(--foreground))]">{item.memo}</p>
+                    </div>
+                  )}
+                </div>
+              )}
               {item.url && (
                 <a
                   href={item.url}
