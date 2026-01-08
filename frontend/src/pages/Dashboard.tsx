@@ -11,6 +11,29 @@ import type { Item } from '@/types'
 
 type SortOption = 'newest' | 'oldest' | 'priority'
 
+// Predefined color palette for categories
+const COLOR_PALETTE = [
+  '#EC4899', // Pink
+  '#F43F5E', // Rose
+  '#EF4444', // Red
+  '#F97316', // Orange
+  '#F59E0B', // Amber
+  '#84CC16', // Lime
+  '#22C55E', // Green
+  '#10B981', // Emerald
+  '#14B8A6', // Teal
+  '#06B6D4', // Cyan
+  '#0EA5E9', // Sky
+  '#3B82F6', // Blue
+  '#6366F1', // Indigo
+  '#8B5CF6', // Violet
+  '#A855F7', // Purple
+  '#D946EF', // Fuchsia
+]
+
+// Generate random color from palette
+const getRandomColor = () => COLOR_PALETTE[Math.floor(Math.random() * COLOR_PALETTE.length)]
+
 export function DashboardPage() {
   const { t } = useTranslation()
   const { items, isLoading, fetchItems } = useItemsStore()
@@ -20,6 +43,7 @@ export function DashboardPage() {
   const [sortBy, setSortBy] = useState<SortOption>('newest')
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
   const [newCategoryName, setNewCategoryName] = useState('')
+  const [newCategoryColor, setNewCategoryColor] = useState(getRandomColor())
   const [isAddingCategory, setIsAddingCategory] = useState(false)
   const [editingItem, setEditingItem] = useState<Item | null>(null)
 
@@ -71,12 +95,18 @@ export function DashboardPage() {
   const handleAddCategory = async () => {
     if (!newCategoryName.trim()) return
     try {
-      await addCategory({ name: newCategoryName.trim() })
+      await addCategory({ name: newCategoryName.trim(), color: newCategoryColor })
       setNewCategoryName('')
+      setNewCategoryColor(getRandomColor())
       setIsAddingCategory(false)
     } catch {
       // Handle error silently
     }
+  }
+
+  const handleStartAddCategory = () => {
+    setNewCategoryColor(getRandomColor())
+    setIsAddingCategory(true)
   }
 
   const handleDeleteCategory = async (categoryId: string, e: React.MouseEvent) => {
@@ -174,17 +204,41 @@ export function DashboardPage() {
           {/* Add Category */}
           <div className="mt-4 pt-4 border-t border-[hsl(var(--border))]">
             {isAddingCategory ? (
-              <div className="space-y-2">
-                <Input
-                  placeholder={t('category.namePlaceholder')}
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleAddCategory()
-                    if (e.key === 'Escape') setIsAddingCategory(false)
-                  }}
-                  autoFocus
-                />
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-6 h-6 rounded-full flex-shrink-0 border-2 border-white shadow-sm"
+                    style={{ backgroundColor: newCategoryColor }}
+                  />
+                  <Input
+                    placeholder={t('category.namePlaceholder')}
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleAddCategory()
+                      if (e.key === 'Escape') {
+                        setIsAddingCategory(false)
+                        setNewCategoryName('')
+                      }
+                    }}
+                    autoFocus
+                    className="flex-1"
+                  />
+                </div>
+                <div className="grid grid-cols-8 gap-1">
+                  {COLOR_PALETTE.map((color) => (
+                    <button
+                      key={color}
+                      type="button"
+                      onClick={() => setNewCategoryColor(color)}
+                      className={`w-6 h-6 rounded-full transition-transform hover:scale-110 ${
+                        newCategoryColor === color ? 'ring-2 ring-offset-1 ring-[hsl(var(--primary))]' : ''
+                      }`}
+                      style={{ backgroundColor: color }}
+                      title={color}
+                    />
+                  ))}
+                </div>
                 <div className="flex gap-2">
                   <Button size="sm" onClick={handleAddCategory}>
                     {t('category.add')}
@@ -206,7 +260,7 @@ export function DashboardPage() {
                 variant="outline"
                 size="sm"
                 className="w-full"
-                onClick={() => setIsAddingCategory(true)}
+                onClick={handleStartAddCategory}
               >
                 + {t('category.addNew')}
               </Button>
