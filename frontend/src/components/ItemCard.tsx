@@ -75,6 +75,16 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
             )}
 
             <div className="flex items-center gap-2 mt-3">
+              {item.url && (
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-[hsl(var(--primary))] hover:underline"
+                >
+                  {t('item.viewProduct')}
+                </a>
+              )}
               {item.memo && (
                 <div className="relative">
                   <button
@@ -100,16 +110,6 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
                     </div>
                   )}
                 </div>
-              )}
-              {item.url && (
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-[hsl(var(--primary))] hover:underline"
-                >
-                  {t('item.viewProduct')}
-                </a>
               )}
               <div className="flex-1" />
               <Button
