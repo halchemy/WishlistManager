@@ -11,28 +11,38 @@ import type { Item } from '@/types'
 
 type SortOption = 'newest' | 'oldest' | 'priority'
 
-// Predefined color palette for categories
-const COLOR_PALETTE = [
-  '#EC4899', // Pink
-  '#F43F5E', // Rose
-  '#EF4444', // Red
-  '#F97316', // Orange
-  '#F59E0B', // Amber
-  '#84CC16', // Lime
-  '#22C55E', // Green
-  '#10B981', // Emerald
-  '#14B8A6', // Teal
-  '#06B6D4', // Cyan
-  '#0EA5E9', // Sky
-  '#3B82F6', // Blue
-  '#6366F1', // Indigo
-  '#8B5CF6', // Violet
-  '#A855F7', // Purple
-  '#D946EF', // Fuchsia
-]
+// Generate random color using HSL for vivid colors
+const getRandomColor = () => {
+  const hue = Math.floor(Math.random() * 360)
+  return `hsl(${hue}, 70%, 55%)`
+}
 
-// Generate random color from palette
-const getRandomColor = () => COLOR_PALETTE[Math.floor(Math.random() * COLOR_PALETTE.length)]
+// Convert HSL to Hex for color input
+const hslToHex = (hsl: string): string => {
+  const match = hsl.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/)
+  if (!match) return hsl.startsWith('#') ? hsl : '#EC4899'
+
+  const h = parseInt(match[1]) / 360
+  const s = parseInt(match[2]) / 100
+  const l = parseInt(match[3]) / 100
+
+  const hue2rgb = (p: number, q: number, t: number) => {
+    if (t < 0) t += 1
+    if (t > 1) t -= 1
+    if (t < 1/6) return p + (q - p) * 6 * t
+    if (t < 1/2) return q
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6
+    return p
+  }
+
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+  const p = 2 * l - q
+  const r = Math.round(hue2rgb(p, q, h + 1/3) * 255)
+  const g = Math.round(hue2rgb(p, q, h) * 255)
+  const b = Math.round(hue2rgb(p, q, h - 1/3) * 255)
+
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`
+}
 
 export function DashboardPage() {
   const { t } = useTranslation()
@@ -225,19 +235,17 @@ export function DashboardPage() {
                     className="flex-1"
                   />
                 </div>
-                <div className="grid grid-cols-8 gap-1">
-                  {COLOR_PALETTE.map((color) => (
-                    <button
-                      key={color}
-                      type="button"
-                      onClick={() => setNewCategoryColor(color)}
-                      className={`w-6 h-6 rounded-full transition-transform hover:scale-110 ${
-                        newCategoryColor === color ? 'ring-2 ring-offset-1 ring-[hsl(var(--primary))]' : ''
-                      }`}
-                      style={{ backgroundColor: color }}
-                      title={color}
-                    />
-                  ))}
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={hslToHex(newCategoryColor)}
+                    onChange={(e) => setNewCategoryColor(e.target.value)}
+                    className="w-full h-8 rounded-lg cursor-pointer border-0 p-0"
+                    style={{
+                      WebkitAppearance: 'none',
+                      background: 'linear-gradient(to right, hsl(0,70%,55%), hsl(60,70%,55%), hsl(120,70%,55%), hsl(180,70%,55%), hsl(240,70%,55%), hsl(300,70%,55%), hsl(360,70%,55%))'
+                    }}
+                  />
                 </div>
                 <div className="flex gap-2">
                   <Button size="sm" onClick={handleAddCategory}>
