@@ -4,6 +4,7 @@ import type { Item } from '@/types'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useItemsStore } from '@/store/items'
+import { useCategoriesStore } from '@/store/categories'
 
 interface ItemCardProps {
   item: Item
@@ -13,7 +14,12 @@ interface ItemCardProps {
 export function ItemCard({ item, onEdit }: ItemCardProps) {
   const { t } = useTranslation()
   const { deleteItem, updateItem } = useItemsStore()
+  const { categories } = useCategoriesStore()
   const [showMemo, setShowMemo] = useState(false)
+
+  const category = item.categoryId
+    ? categories.find(c => c.id === item.categoryId)
+    : null
 
   const handleDelete = async () => {
     if (window.confirm(t('item.confirmDelete'))) {
@@ -59,13 +65,22 @@ export function ItemCard({ item, onEdit }: ItemCardProps) {
               <h3 className={`font-semibold truncate ${item.isPurchased ? 'line-through' : ''}`}>
                 {item.name}
               </h3>
-              {item.priority && (
-                <span
-                  className={`text-xs px-3 py-1 rounded-full flex-shrink-0 font-medium ${getPriorityStyle(item.priority)}`}
-                >
-                  {getPriorityLabel(item.priority)}
-                </span>
-              )}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {category?.color && (
+                  <span
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: category.color }}
+                    title={category.name}
+                  />
+                )}
+                {item.priority && (
+                  <span
+                    className={`text-xs px-3 py-1 rounded-full font-medium ${getPriorityStyle(item.priority)}`}
+                  >
+                    {getPriorityLabel(item.priority)}
+                  </span>
+                )}
+              </div>
             </div>
 
             {item.description && (
