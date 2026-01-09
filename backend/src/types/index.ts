@@ -5,6 +5,7 @@ export interface User {
   email: string
   password_hash: string
   name: string
+  share_token: string | null
   created_at: string
   updated_at: string
 }

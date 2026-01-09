@@ -6,7 +6,8 @@
     "cancel": "キャンセル",
     "delete": "削除",
     "edit": "編集",
-    "search": "検索"
+    "search": "検索",
+    "close": "閉じる"
   },
   "header": {
     "title": "WishlistManager",
@@ -106,6 +107,20 @@
     "addNew": "分類を追加",
     "namePlaceholder": "分類名を入力",
     "confirmDelete": "この分類を削除してもよろしいですか？"
+  },
+  "share": {
+    "title": "リストを共有",
+    "button": "共有",
+    "linkLabel": "共有リンク",
+    "copy": "コピー",
+    "copied": "コピー済み",
+    "shareOn": "SNSで共有",
+    "shareText": "私のほしいものリストを見てください！",
+    "regenerate": "リンクを再生成する",
+    "regenerateNote": "新しいリンクを生成すると、以前のリンクは使えなくなります",
+    "publicTitle": "のほしいものリスト",
+    "notFound": "ウィッシュリストが見つかりません",
+    "notFoundDesc": "リンクが無効か、削除された可能性があります"
   },
   "language": {
     "ja": "日本語",

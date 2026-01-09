@@ -6,7 +6,8 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "search": "Search"
+    "search": "Search",
+    "close": "Close"
   },
   "header": {
     "title": "WishlistManager",
@@ -106,6 +107,20 @@
     "addNew": "Add Category",
     "namePlaceholder": "Enter category name",
     "confirmDelete": "Are you sure you want to delete this category?"
+  },
+  "share": {
+    "title": "Share Your List",
+    "button": "Share",
+    "linkLabel": "Share Link",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "shareOn": "Share on",
+    "shareText": "Check out my wishlist!",
+    "regenerate": "Regenerate link",
+    "regenerateNote": "Generating a new link will invalidate the previous one",
+    "publicTitle": "'s Wishlist",
+    "notFound": "Wishlist not found",
+    "notFoundDesc": "The link may be invalid or the wishlist has been deleted"
   },
   "language": {
     "ja": "日本語",

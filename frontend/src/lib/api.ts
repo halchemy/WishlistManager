@@ -99,4 +99,28 @@ export const categoriesApi = {
   },
 }
 
+// Share API
+export interface PublicWishlist {
+  userName: string
+  items: Item[]
+  categories: Category[]
+}
+
+export const shareApi = {
+  getToken: async () => {
+    const response = await api.get<{ shareToken: string }>('/share/token')
+    return response.data
+  },
+
+  regenerateToken: async () => {
+    const response = await api.post<{ shareToken: string }>('/share/token/regenerate')
+    return response.data
+  },
+
+  getPublicWishlist: async (token: string) => {
+    const response = await api.get<PublicWishlist>(`/share/wishlist/${token}`)
+    return response.data
+  },
+}
+
 export default api

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ItemCard } from '@/components/ItemCard'
 import { EditItemModal } from '@/components/EditItemModal'
+import { ShareModal } from '@/components/ShareModal'
 import type { Item } from '@/types'
 
 type SortOption = 'newest' | 'oldest' | 'priority'
@@ -56,6 +57,7 @@ export function DashboardPage() {
   const [newCategoryColor, setNewCategoryColor] = useState(getRandomColor())
   const [isAddingCategory, setIsAddingCategory] = useState(false)
   const [editingItem, setEditingItem] = useState<Item | null>(null)
+  const [showShareModal, setShowShareModal] = useState(false)
 
   useEffect(() => {
     fetchItems()
@@ -277,9 +279,14 @@ export function DashboardPage() {
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">{t('dashboard.title')}</h1>
-          <Link to="/items/new">
-            <Button>{t('dashboard.addItem')}</Button>
-          </Link>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setShowShareModal(true)}>
+              {t('share.button')}
+            </Button>
+            <Link to="/items/new">
+              <Button>{t('dashboard.addItem')}</Button>
+            </Link>
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -370,6 +377,11 @@ export function DashboardPage() {
           item={editingItem}
           onClose={() => setEditingItem(null)}
         />
+      )}
+
+      {/* Share Modal */}
+      {showShareModal && (
+        <ShareModal onClose={() => setShowShareModal(false)} />
       )}
     </div>
   )

@@ -7,6 +7,7 @@ import { LoginPage } from '@/pages/Login'
 import { SignupPage } from '@/pages/Signup'
 import { DashboardPage } from '@/pages/Dashboard'
 import { AddItemPage } from '@/pages/AddItem'
+import { PublicWishlistPage } from '@/pages/PublicWishlist'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuthStore()
@@ -80,6 +81,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/wishlist/:token" element={<PublicWishlistPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

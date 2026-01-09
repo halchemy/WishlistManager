@@ -26,6 +26,7 @@ db.exec(`
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     name TEXT NOT NULL,
+    share_token TEXT UNIQUE,
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))
   );
@@ -60,6 +61,7 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_items_user_id ON items(user_id);
   CREATE INDEX IF NOT EXISTS idx_items_category_id ON items(category_id);
   CREATE INDEX IF NOT EXISTS idx_categories_user_id ON categories(user_id);
+  CREATE INDEX IF NOT EXISTS idx_users_share_token ON users(share_token);
 `)
 
 console.log('Database initialized successfully!')
