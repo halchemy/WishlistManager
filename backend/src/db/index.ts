@@ -17,8 +17,8 @@ try {
   const columns = db.prepare("PRAGMA table_info(users)").all() as { name: string }[]
   const hasShareToken = columns.some(col => col.name === 'share_token')
   if (!hasShareToken) {
-    db.exec('ALTER TABLE users ADD COLUMN share_token TEXT UNIQUE')
-    db.exec('CREATE INDEX IF NOT EXISTS idx_users_share_token ON users(share_token)')
+    db.exec('ALTER TABLE users ADD COLUMN share_token TEXT')
+    db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_users_share_token ON users(share_token)')
     console.log('Added share_token column to users table')
   }
 } catch (error) {
