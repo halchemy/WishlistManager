@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist Manager</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Wishlist Manager</h1>
+
+    <!-- Login Form -->
+    <div id="login-form" class="section hidden">
+      <div class="form-group">
+        <label for="server-url">Server URL</label>
+        <input type="url" id="server-url" placeholder="http://localhost:5173">
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="email@example.com">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Password">
+      </div>
+      <button id="login-btn" class="btn btn-primary">Login</button>
+      <p id="login-error" class="error hidden"></p>
+    </div>
+
+    <!-- Add Item Form -->
+    <div id="add-form" class="section hidden">
+      <div class="page-info">
+        <img id="page-image" src="" alt="" class="page-image hidden">
+        <div class="page-details">
+          <p id="page-title" class="page-title"></p>
+          <p id="page-url" class="page-url"></p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="">Select category</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="priority">Priority</label>
+        <select id="priority">
+          <option value="1">1 (Low)</option>
+          <option value="2">2</option>
+          <option value="3" selected>3 (Medium)</option>
+          <option value="4">4</option>
+          <option value="5">5 (High)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="memo">Memo</label>
+        <textarea id="memo" rows="2" placeholder="Optional memo"></textarea>
+      </div>
+
+      <button id="add-btn" class="btn btn-primary">Add to Wishlist</button>
+      <button id="logout-btn" class="btn btn-secondary">Logout</button>
+      <p id="add-error" class="error hidden"></p>
+      <p id="add-success" class="success hidden"></p>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="section">
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
